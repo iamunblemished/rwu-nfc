@@ -51,14 +51,6 @@ jobs:
         cd docs
         sphinx-build -b html -j auto source build/html
 
-    - name: Verify PlantUML images were generated
-      run: |
-        echo "Checking for PlantUML images..."
-        ls -la docs/build/html/_plantuml/ || echo "No _plantuml directory found"
-        find docs/build/html -name "*.svg" -path "*/_plantuml/*" | head -10
-
-    # PDF generation removed — this workflow builds only HTML and deploys it
-
     - name: Prepare public directory
       run: |
         mkdir -p public
