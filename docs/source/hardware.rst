@@ -195,73 +195,82 @@ Wiring Diagram
    :caption: Hardware Connection Diagram
 
    digraph hardware_connections {
-       rankdir=LR;
-       node [shape=record];
+       graph [splines=ortho, nodesep=1.0, ranksep=1.5];
+       rankdir=TB;
+       node [shape=record, style=filled];
        
-       // Arduino
-       arduino [label="{Arduino Nano|{<d2>D2 (IRQ)|<d3>D3 (RST)|<d4>D4|<d5>D5|<d6>D6|<d7>D7|<d8>D8|<d9>D9|<d10>D10 (SS)|<d11>D11 (MOSI)|<d12>D12 (MISO)|<d13>D13 (SCK)|<a0>A0|<a1>A1|<a2>A2|<a3>A3|<a4>A4|<5v>5V|<gnd>GND}}", fillcolor=lightgreen, style=filled];
+       // Arduino - center
+       arduino [label="{Arduino Nano|{<d13>D13 (SCK)|<d12>D12 (MISO)|<d11>D11 (MOSI)|<d10>D10 (SS)|<d9>D9|<d8>D8|<d7>D7|<d6>D6|<d5>D5|<d4>D4|<d3>D3 (RST)|<d2>D2 (IRQ)}|{<a0>A0|<a1>A1|<a2>A2|<a3>A3|<a4>A4}|{<5v>5V|<gnd>GND}}", fillcolor=lightgreen];
        
-       // PN532
-       pn532 [label="{PN532 NFC Module|{<irq>IRQ|<rst>RST|<ss>SS|<mosi>MOSI|<miso>MISO|<sck>SCK|<vcc>VCC|<gnd>GND}}", fillcolor=lightyellow, style=filled];
+       // Top row - NFC Module
+       {
+           rank=same;
+           pn532 [label="{<sck>SCK|<miso>MISO|<mosi>MOSI|<ss>SS|<rst>RST|<irq>IRQ|PN532 NFC Module|<vcc>VCC|<gnd>GND}", fillcolor=lightyellow];
+       }
        
-       // LCD
-       lcd [label="{16x2 LCD Display|{<rs>RS|<e>E|<d4>D4|<d5>D5|<d6>D6|<d7>D7|<vdd>VDD|<vss>VSS|<v0>V0}}", fillcolor=lightblue, style=filled];
+       // Middle left - LCD
+       {
+           rank=same;
+           lcd [label="{<d7>D7|<d6>D6|<d5>D5|<d4>D4|<e>E|<rs>RS|16x2 LCD|<v0>V0|<vdd>VDD|<vss>VSS}", fillcolor=lightblue];
+           pot [label="10kΩ POT\n(Contrast)", shape=ellipse, fillcolor=lightgray];
+       }
        
-       // Buttons
-       btn_up [label="Button UP", shape=box, fillcolor=orange, style=filled];
-       btn_down [label="Button DOWN", shape=box, fillcolor=orange, style=filled];
-       btn_select [label="Button SELECT", shape=box, fillcolor=orange, style=filled];
-       btn_back [label="Button BACK", shape=box, fillcolor=orange, style=filled];
+       // Middle right - Buttons
+       {
+           rank=same;
+           buttons [label="{Button UP|Button DOWN|Button SELECT|Button BACK|Navigation Buttons}", fillcolor=orange];
+       }
        
-       // Relay
-       relay [label="{Relay Module|{<in>IN|<vcc>VCC|<gnd>GND}}", fillcolor=pink, style=filled];
+       // Bottom - Relay and Power
+       {
+           rank=same;
+           relay [label="{<in>IN|Relay Module|<vcc>VCC|<gnd>GND}", fillcolor=pink];
+           power_5v [label="5V\nPower", shape=ellipse, fillcolor=red];
+           power_gnd [label="GND\nGround", shape=ellipse, fillcolor=black, fontcolor=white];
+       }
        
-       // Potentiometer
-       pot [label="10kΩ POT\n(Contrast)", shape=ellipse, fillcolor=lightgray, style=filled];
+       // SPI Connections to PN532 (top)
+       arduino:d13 -> pn532:sck [label="  SCK  ", color=blue, fontcolor=blue];
+       arduino:d12 -> pn532:miso [label="  MISO  ", color=blue, fontcolor=blue];
+       arduino:d11 -> pn532:mosi [label="  MOSI  ", color=blue, fontcolor=blue];
+       arduino:d10 -> pn532:ss [label="  SS  ", color=blue, fontcolor=blue];
+       arduino:d3 -> pn532:rst [label="  RST  ", color=purple, fontcolor=purple];
+       arduino:d2 -> pn532:irq [label="  IRQ  ", color=purple, fontcolor=purple];
        
-       // Power
-       power_5v [label="5V", shape=ellipse, fillcolor=red, style=filled];
-       power_gnd [label="GND", shape=ellipse, fillcolor=black, style=filled, fontcolor=white];
+       // LCD Connections (left)
+       arduino:d4 -> lcd:rs [label="  RS  ", color=green, fontcolor=green];
+       arduino:d5 -> lcd:e [label="  E  ", color=green, fontcolor=green];
+       arduino:d6 -> lcd:d4 [label="  D4  ", color=green, fontcolor=green];
+       arduino:d7 -> lcd:d5 [label="  D5  ", color=green, fontcolor=green];
+       arduino:d8 -> lcd:d6 [label="  D6  ", color=green, fontcolor=green];
+       arduino:d9 -> lcd:d7 [label="  D7  ", color=green, fontcolor=green];
        
-       // Connections
-       arduino:d2 -> pn532:irq [label="IRQ"];
-       arduino:d3 -> pn532:rst [label="RST"];
-       arduino:d10 -> pn532:ss [label="SS"];
-       arduino:d11 -> pn532:mosi [label="MOSI"];
-       arduino:d12 -> pn532:miso [label="MISO"];
-       arduino:d13 -> pn532:sck [label="SCK"];
+       // Button Connections (right)
+       arduino:a0 -> buttons [label="  UP (A0)  ", color=orange, fontcolor=orange];
+       arduino:a1 -> buttons [label="  DOWN (A1)  ", color=orange, fontcolor=orange];
+       arduino:a2 -> buttons [label="  SELECT (A2)  ", color=orange, fontcolor=orange];
+       arduino:a3 -> buttons [label="  BACK (A3)  ", color=orange, fontcolor=orange];
        
-       arduino:d4 -> lcd:rs [label="RS"];
-       arduino:d5 -> lcd:e [label="E"];
-       arduino:d6 -> lcd:d4 [label="D4"];
-       arduino:d7 -> lcd:d5 [label="D5"];
-       arduino:d8 -> lcd:d6 [label="D6"];
-       arduino:d9 -> lcd:d7 [label="D7"];
+       // Relay Connection (bottom)
+       arduino:a4 -> relay:in [label="  Control (A4)  ", color=red, fontcolor=red];
        
-       arduino:a0 -> btn_up [label="UP"];
-       arduino:a1 -> btn_down [label="DOWN"];
-       arduino:a2 -> btn_select [label="SELECT"];
-       arduino:a3 -> btn_back [label="BACK"];
+       // Power Distribution
+       arduino:5v -> power_5v [dir=both, color=red, penwidth=2];
+       arduino:gnd -> power_gnd [dir=both, color=black, penwidth=2];
        
-       arduino:a4 -> relay:in [label="Control"];
+       power_5v -> pn532:vcc [color=red, style=dashed];
+       power_5v -> lcd:vdd [color=red, style=dashed];
+       power_5v -> relay:vcc [color=red, style=dashed];
        
-       arduino:5v -> power_5v;
-       arduino:gnd -> power_gnd;
+       power_gnd -> pn532:gnd [color=black, style=dashed];
+       power_gnd -> lcd:vss [color=black, style=dashed];
+       power_gnd -> relay:gnd [color=black, style=dashed];
+       power_gnd -> buttons [label="  GND  ", color=black, style=dashed];
        
-       power_5v -> pn532:vcc;
-       power_5v -> lcd:vdd;
-       power_5v -> relay:vcc;
-       
-       power_gnd -> pn532:gnd;
-       power_gnd -> lcd:vss;
-       power_gnd -> relay:gnd;
-       
-       pot -> lcd:v0 [label="Contrast"];
+       // LCD Contrast
+       pot -> lcd:v0 [label="  Contrast  ", color=gray];
    }
 
-.. note::
-   A complete wiring diagram in Fritzing format is available in the
-   ``hardware/`` directory of the project repository.
 
 Power Considerations
 --------------------
