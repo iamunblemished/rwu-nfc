@@ -110,9 +110,10 @@ latex_documents = [
 
 latex_documents = [
     # (source start file, target name, title, author, documentclass [article, manual, howto]).
-    ('manual_read', 'NFC_Read_Guide.tex', 'NFC Tag Reading Documentation', 'RWU NFC Lab', 'manual'), 
-    ('manual_write', 'NFC_Write_Guide.tex', 'NFC Card Cloning Documentation', 'RWU NFC Lab', 'manual'),
+    ('manual_read', 'NFC_Read_Guide.tex', 'NFC Tag Reading', 'RWU NFC Lab Aufgabe 1', 'manual'), 
+    ('manual_write', 'NFC_Write_Guide.tex', 'NFC Tag Writing', 'RWU NFC Lab Aufgabe 2', 'manual'),
 ]
+
 
 # -- Options for manual page output ------------------------------------------
 
