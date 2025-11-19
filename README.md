@@ -1,6 +1,105 @@
 # NFC Access Control System
 
-A professional access control system using PN532 NFC reader with advanced card cloning capabilities.
+> **A professional-grade, Arduino-based access control solution featuring advanced NFC card cloning technology and comprehensive card management capabilities.**
+
+[![Platform](https://img.shields.io/badge/Platform-Arduino-blue.svg)](https://www.arduino.cc/)
+[![Framework](https://img.shields.io/badge/Framework-PlatformIO-orange.svg)](https://platformio.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Documentation](https://img.shields.io/badge/Docs-Sphinx-brightgreen.svg)](doc/)
+
+## 📖 Description
+
+The NFC Access Control System is an embedded security solution designed for educational institutions, laboratories, and small-to-medium scale access control applications. Built on the Arduino platform with the industry-standard PN532 NFC module, it combines simplicity with advanced features like intelligent card cloning, multi-card authorization, and real-time access management.
+
+### What Makes This Project Unique?
+
+Unlike traditional access control systems, this project implements **custom sector card cloning technology** that works with standard Mifare Classic cards—no expensive "magic cards" required. The system intelligently manages both physical and cloned UIDs, providing flexible access control without the limitations of conventional NFC systems.
+
+### Key Highlights
+
+- 🔒 **Secure**: Local card database with EEPROM persistence, no network dependencies
+- ⚡ **Fast**: IRQ-based card detection with <100ms response time
+- 🎯 **Smart**: Automatic UID selection (cloned vs. physical)
+- 🖥️ **User-Friendly**: Interactive LCD menu with intuitive button navigation
+- 🔧 **Flexible**: Support for up to 40 authorized cards with easy management
+- 📚 **Well-Documented**: Comprehensive Sphinx documentation with diagrams
+- 🛠️ **Professional**: Built with PlatformIO for modern embedded development
+
+### Perfect For
+
+- **Educational Projects**: Learn about NFC technology, embedded systems, and access control
+- **Laboratory Security**: Manage access to restricted areas in research facilities
+- **Maker Spaces**: Control access to shared equipment and facilities
+- **Office Access**: Small office door control with card management
+- **Prototype Development**: Foundation for commercial access control products
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Arduino Nano or compatible board
+- PN532 NFC module
+- 16x2 LCD display
+- 4 push buttons
+- Relay module
+- PlatformIO IDE or CLI
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Menazaa/rwu-nfc.git
+cd rwu-nfc
+
+# Build the project
+pio run
+
+# Upload to your Arduino (adjust COM port as needed)
+pio run --target upload --upload-port COM13
+
+# Monitor serial output
+pio device monitor --baud 115200
+```
+
+### First Use
+
+1. **Power up the system** - LCD displays "NFC Access Control"
+2. **Press SELECT** to enter menu
+3. **Select "Register Card"** 
+4. **Scan your first card** - It's now authorized
+5. **Test access** - Scan the card to unlock the relay
+
+That's it! Your access control system is ready.
+
+## 📑 Table of Contents
+
+- [Description](#-description)
+- [Quick Start](#-quick-start)
+- [Features](#features)
+- [Hardware Requirements](#hardware-requirements)
+- [Software Setup](#software-setup)
+- [How It Works](#how-it-works)
+- [Menu System](#menu-system)
+- [Configuration](#configuration)
+- [EEPROM Storage](#eeprom-storage)
+- [Documentation](#-documentation)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#-contributing)
+- [Security](#-security-considerations)
+- [License & Credits](#license--credits)
+
+## 🛠️ Technology Stack
+
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **Microcontroller** | ATmega328P (Arduino Nano) | Main processing unit |
+| **NFC Module** | PN532 @ 13.56MHz | Card reading/writing |
+| **Communication** | SPI + IRQ | Fast, non-blocking I/O |
+| **Display** | HD44780 (16x2 LCD) | User interface |
+| **Storage** | EEPROM (1KB) | Persistent card database |
+| **Build System** | PlatformIO | Modern embedded development |
+| **Language** | C++11 | Firmware programming |
+| **Documentation** | Sphinx + Graphviz | Technical documentation |
+| **Libraries** | Adafruit PN532, LiquidCrystal | Hardware abstraction |
 
 ## Features
 
@@ -316,20 +415,95 @@ Enable verbose output in Serial Monitor (115200 baud):
 
 ## License & Credits
 
-**Author**: Mohamed Aly
-**Platform**: Arduino + PlatformIO
+**Author**: Mohamed Aly  
+**Organization**: RWU NFC Lab  
+**Platform**: Arduino + PlatformIO  
 **Libraries**: Adafruit PN532, Arduino LiquidCrystal
 
 This project demonstrates advanced NFC card management without requiring special magic/writable UID cards by using custom data sectors.
 
+## 📚 Documentation
+
+Comprehensive documentation is available in the `doc/` directory, built with Sphinx:
+
+- **[Introduction](doc/source/introduction.rst)** - System overview and architecture diagrams
+- **[Hardware Setup](doc/source/hardware.rst)** - Wiring diagrams and component details
+- **[Installation Guide](doc/source/installation.rst)** - Development environment setup
+- **[Usage Guide](doc/source/usage.rst)** - Operating instructions and menu navigation
+- **[API Reference](doc/source/api.rst)** - Class documentation and code examples
+- **[EEPROM Layout](doc/source/eeprom.rst)** - Memory structure and management
+- **[Card Cloning](doc/source/card_cloning.rst)** - Technical details of cloning technology
+- **[Troubleshooting](doc/source/troubleshooting.rst)** - Common issues and solutions
+
+### Building Documentation
+
+```bash
+cd doc
+pip install -r requirements.txt
+make html  # or .\make.bat html on Windows
+```
+
+Open `doc/build/html/index.html` in your browser.
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. **Report Bugs**: Open an issue with detailed reproduction steps
+2. **Suggest Features**: Share your ideas for improvements
+3. **Submit Pull Requests**: Fork, implement, and submit PRs
+4. **Improve Documentation**: Fix typos, add examples, or clarify instructions
+5. **Share Use Cases**: Tell us how you're using this project
+
+### Development Guidelines
+
+- Follow existing code style and conventions
+- Test thoroughly before submitting PRs
+- Update documentation for new features
+- Add comments for complex logic
+- Keep commits focused and descriptive
+
+## 🔒 Security Considerations
+
+**Important**: This system is designed for educational and convenience purposes. For production deployments:
+
+- ✅ Use encrypted card data storage
+- ✅ Implement access logging and audit trails
+- ✅ Add physical tamper detection
+- ✅ Use secure communication protocols for remote management
+- ✅ Regular security audits and updates
+- ✅ Consider upgrading to DESFire or other secure card types
+
+## 📊 Project Status
+
+- ✅ Core access control functionality
+- ✅ Card registration and deletion
+- ✅ Advanced card cloning with custom sectors
+- ✅ IRQ-based fast card detection
+- ✅ Interactive LCD menu system
+- ✅ Comprehensive Sphinx documentation with diagrams
+- 🚧 Network connectivity (future)
+- 🚧 Mobile app integration (future)
+- 🚧 Time-based access rules (future)
+
+## 🌟 Acknowledgments
+
+- **Adafruit** for the excellent PN532 library
+- **PlatformIO** for modern embedded development tools
+- **Arduino Community** for extensive resources and support
+- **RWU NFC Lab** for project sponsorship
+
 ## Support
 
 For issues and questions:
-1. Check Serial Monitor output
-2. Verify hardware connections
-3. Review troubleshooting section
-4. Check card compatibility (Mifare Classic 1K/4K)
+1. Check Serial Monitor output (115200 baud)
+2. Verify hardware connections against wiring diagram
+3. Review [Troubleshooting Documentation](doc/source/troubleshooting.rst)
+4. Check card compatibility (Mifare Classic 1K/4K required for cloning)
+5. Open an issue on GitHub with detailed information
 
 ---
 
-**Note**: This system is designed for educational and convenience purposes. For high-security applications, implement additional cryptographic measures and use secure authentication protocols.
+**⭐ If you find this project useful, please consider giving it a star!**
+
+*Made with ❤️ for the maker community*
