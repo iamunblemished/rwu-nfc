@@ -2,6 +2,9 @@
 build/
 _build/
 
+# PlantUML jar (downloaded by setup script)
+plantuml.jar
+
 # Python
 __pycache__/
 *.py[cod]

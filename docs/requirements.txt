@@ -3,4 +3,10 @@ sphinx>=5.0.0
 sphinx-rtd-theme>=1.2.0
 breathe>=4.35.0
 graphviz>=0.20
+sphinxcontrib-plantuml>=0.24
 sphinx-autobuild>=2021.3.14
+Pillow>=10.0.0
+sphinxemoji>=0.2.0
+
+# PlatformIO - For firmware development (optional for docs-only builds)
+platformio>=6.1.0

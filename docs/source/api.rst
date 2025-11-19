@@ -4,6 +4,11 @@ API Reference
 This section provides detailed documentation of the classes, methods, and
 configuration options available in the NFC Access Control System.
 
+.. note::
+   
+   For practical examples of using these APIs, see :doc:`examples` which covers 
+   the basic read and write operations (Course Tasks 1 & 2).
+
 Core Classes
 ------------
 
@@ -98,46 +103,12 @@ and cloning functionality.
       
       :return: ``true`` if initialization successful, ``false`` otherwise
 
-   .. cpp:function:: bool readCard(uint8_t* uid, uint8_t* uidLength)
+   .. cpp:function:: NFCCardInfo readCard()
 
-      Reads a card and retrieves its UID.
+      Reads a card and retrieves its complete information.
       Automatically uses cloned UID if present, otherwise physical UID.
       
-      :param uid: Buffer to store UID (must be at least 7 bytes)
-      :param uidLength: Pointer to store UID length
-      :return: ``true`` if card read successfully
-
-   .. cpp:function:: bool readPhysicalUID(uint8_t* uid, uint8_t* uidLength)
-
-      Reads only the physical (manufacturer) UID from Block 0.
-      
-      :param uid: Buffer to store UID
-      :param uidLength: Pointer to store UID length
-      :return: ``true`` if successful
-
-   .. cpp:function:: bool readClonedUID(uint8_t* uid, uint8_t* uidLength)
-
-      Reads the cloned UID from custom sector (Sector 1, Block 4).
-      
-      :param uid: Buffer to store UID
-      :param uidLength: Pointer to store UID length
-      :return: ``true`` if cloned UID exists
-
-   .. cpp:function:: bool cloneCard(uint8_t* sourceUID, uint8_t sourceLength, uint8_t* targetUID, uint8_t targetLength)
-
-      Clones a source card UID to a target card.
-      
-      :param sourceUID: Source card UID to copy
-      :param sourceLength: Length of source UID
-      :param targetUID: Target card physical UID
-      :param targetLength: Length of target UID
-      :return: ``true`` if cloning successful
-
-   .. cpp:function:: NFCCardType getCardType(uint8_t* uid, uint8_t uidLength)
-
-      Determines the type of NFC card.
-      
-      :return: Card type enumeration value
+      :return: ``NFCCardInfo`` structure containing all card data
 
    .. cpp:function:: bool isCardPresent()
 
@@ -145,13 +116,212 @@ and cloning functionality.
       
       :return: ``true`` if card detected
 
+   .. cpp:function:: void resetCardState()
+
+      Resets the card detection state to allow re-reading the same card.
+      Call this after processing a card to enable detection again.
+
+   .. cpp:function:: NFCWriteResult writeString(const String& text, uint8_t startAddress = 0, bool verify = true)
+
+      Writes a string to the card, auto-detecting card type.
+      
+      :param text: String to write
+      :param startAddress: Starting address (block or page depending on card type)
+      :param verify: Whether to verify the write operation
+      :return: ``NFCWriteResult`` structure with success status
+
+   .. cpp:function:: NFCWriteResult writeData(const uint8_t* data, uint8_t dataLength, uint8_t startAddress = 0, bool verify = true)
+
+      Writes binary data to the card, auto-detecting card type.
+      
+      :param data: Pointer to data buffer
+      :param dataLength: Number of bytes to write
+      :param startAddress: Starting address
+      :param verify: Whether to verify the write operation
+      :return: ``NFCWriteResult`` structure with success status
+
+   .. cpp:function:: NFCWriteResult writeNTAG(uint8_t page, const uint8_t* data, uint8_t dataLength, bool verify = true)
+
+      Writes data to an NTAG or Ultralight card (page-based).
+      
+      :param page: Page number (use 4 or higher for user data)
+      :param data: Pointer to data buffer (4 bytes per page)
+      :param dataLength: Number of bytes to write
+      :param verify: Whether to verify the write operation
+      :return: ``NFCWriteResult`` structure with success status
+
+   .. cpp:function:: NFCWriteResult writeNTAGString(uint8_t startPage, const String& text, bool verify = true)
+
+      Writes a string across multiple NTAG/Ultralight pages.
+      
+      :param startPage: Starting page number
+      :param text: String to write
+      :param verify: Whether to verify the write operation
+      :return: ``NFCWriteResult`` structure with success status
+
+   .. cpp:function:: NFCWriteResult writeMifareClassic(uint8_t block, const uint8_t* data, uint8_t dataLength, const uint8_t* key = DEFAULT_KEY, bool useKeyB = false, bool verify = true)
+
+      Writes data to a Mifare Classic card (block-based, requires authentication).
+      
+      :param block: Block number (use 4 or higher for user data)
+      :param data: Pointer to data buffer (16 bytes per block)
+      :param dataLength: Number of bytes to write
+      :param key: Authentication key (6 bytes, default FF FF FF FF FF FF)
+      :param useKeyB: Use Key B instead of Key A
+      :param verify: Whether to verify the write operation
+      :return: ``NFCWriteResult`` structure with success status
+
+   .. cpp:function:: NFCWriteResult writeMifareClassicString(uint8_t startBlock, const String& text, const uint8_t* key = DEFAULT_KEY, bool useKeyB = false, bool verify = true)
+
+      Writes a string across multiple Mifare Classic blocks.
+      
+      :param startBlock: Starting block number
+      :param text: String to write
+      :param key: Authentication key
+      :param useKeyB: Use Key B instead of Key A
+      :param verify: Whether to verify the write operation
+      :return: ``NFCWriteResult`` structure with success status
+
 Enumerations
 ------------
+
+NFCCommMode
+^^^^^^^^^^^
+
+PN532 communication modes.
+
+.. code-block:: cpp
+
+   enum class NFCCommMode {
+       I2C,  // I2C communication (simpler wiring, slower)
+       SPI   // SPI communication (more wires, faster - recommended)
+   };
+
+NFCReadMode
+^^^^^^^^^^^
+
+Card reading modes.
+
+.. code-block:: cpp
+
+   enum class NFCReadMode {
+       POLLING,  // Continuous polling (~100ms interval)
+       IRQ       // Interrupt-driven (faster, recommended)
+   };
+
+NFCCardType
+^^^^^^^^^^^
+
+Supported NFC card types.
+
+.. code-block:: cpp
+
+   enum class NFCCardType {
+       UNKNOWN,             // Unknown or unsupported card type
+       MIFARE_CLASSIC_1K,   // Mifare Classic 1K (4-byte UID, 1KB)
+       MIFARE_CLASSIC_4K,   // Mifare Classic 4K (4-byte UID, 4KB)
+       MIFARE_ULTRALIGHT,   // Mifare Ultralight (7-byte UID, 64 bytes)
+       NTAG                 // NTAG213/215/216 (7-byte UID, varies)
+   };
+
+Data Structures
+---------------
+
+NFCCardInfo
+^^^^^^^^^^^
+
+Complete information about a detected NFC card.
+
+.. code-block:: cpp
+
+   struct NFCCardInfo {
+       bool detected;              // True if card was detected
+       uint8_t uid[7];            // Physical UID from manufacturer block
+       uint8_t uidLength;         // UID length (4 or 7 bytes)
+       NFCCardType cardType;      // Type of card detected
+       uint32_t cardID;           // Numeric ID for 4-byte UIDs
+       
+       // Card cloning features (advanced)
+       bool hasClonedUID;         // True if card has cloned UID in custom sector
+       uint8_t clonedUID[7];      // Cloned UID data
+       uint8_t clonedUIDLength;   // Length of cloned UID
+       
+       // Helper methods
+       const uint8_t* getEffectiveUID() const;      // Returns cloned or physical UID
+       uint8_t getEffectiveUIDLength() const;       // Returns effective UID length
+   };
+
+**Usage Example:**
+
+.. code-block:: cpp
+
+   NFCCardInfo card = nfcReader.readCard();
+   
+   if (card.detected) {
+       // Use effective UID (cloned if available, otherwise physical)
+       const uint8_t* uid = card.getEffectiveUID();
+       uint8_t len = card.getEffectiveUIDLength();
+       
+       // Or access specific UIDs
+       if (card.hasClonedUID) {
+           // This card has been cloned
+           Serial.print("Cloned UID: ");
+           for (int i = 0; i < card.clonedUIDLength; i++) {
+               Serial.print(card.clonedUID[i], HEX);
+           }
+       }
+   }
+
+NFCWriteResult
+^^^^^^^^^^^^^^
+
+Result of a write operation to an NFC card.
+
+.. code-block:: cpp
+
+   struct NFCWriteResult {
+       bool success;         // True if write was successful
+       bool verified;        // True if write was verified
+       String errorMessage;  // Description of error (if success is false)
+   };
+
+**Usage Example:**
+
+.. code-block:: cpp
+
+   NFCWriteResult result = nfcReader.writeString("Hello NFC!", 4, true);
+   
+   if (result.success) {
+       Serial.println("Write successful!");
+       if (result.verified) {
+           Serial.println("Data verified!");
+       }
+   } else {
+       Serial.print("Write failed: ");
+       Serial.println(result.errorMessage);
+   }
 
 SystemState
 ^^^^^^^^^^^
 
-Defines the possible states of the access control system.
+States of the access control system state machine.
+
+.. code-block:: cpp
+
+   enum class SystemState {
+       IDLE,           // Ready to scan card
+       ACCESS_GRANTED, // Card authorized, relay activated
+       ACCESS_DENIED,  // Card not authorized
+       MENU,           // In menu system
+       REGISTERING,    // Registering new card
+       DELETING,       // Deleting card
+       LISTING_CARDS,  // Displaying stored cards
+       CLONING_SOURCE, // Waiting for source card to clone
+       CLONING_TARGET  // Waiting for target card to write
+   };
+
+State Machine Diagram
+^^^^^^^^^^^^^^^^^^^^^
 
 .. graphviz::
    :caption: System State Machine
@@ -196,73 +366,20 @@ Defines the possible states of the access control system.
        CLONING_TARGET -> MENU [label="BACK"];
    }
 
-.. code-block:: cpp
-
-   enum class SystemState {
-       IDLE,           // Ready to scan card
-       ACCESS_GRANTED, // Card authorized
-       ACCESS_DENIED,  // Card not authorized
-       MENU,           // In menu system
-       REGISTERING,    // Registering new card
-       DELETING,       // Deleting card
-       LISTING_CARDS,  // Displaying stored cards
-       CLONING_SOURCE, // Waiting for source card to clone
-       CLONING_TARGET  // Waiting for target card to write
-   };
-
 MenuItem
 ^^^^^^^^
 
-Main menu options.
+Main menu options available in the system.
 
 .. code-block:: cpp
 
    enum class MenuItem {
-       REGISTER_CARD,
-       DELETE_CARD,
-       LIST_CARDS,
-       CLONE_CARD,
-       SYSTEM_INFO,
-       EXIT_MENU
-   };
-
-NFCCommMode
-^^^^^^^^^^^
-
-PN532 communication modes.
-
-.. code-block:: cpp
-
-   enum class NFCCommMode {
-       I2C,
-       SPI
-   };
-
-NFCReadMode
-^^^^^^^^^^^
-
-Card reading modes.
-
-.. code-block:: cpp
-
-   enum class NFCReadMode {
-       POLLING,  // Continuous polling
-       IRQ       // Interrupt-driven
-   };
-
-NFCCardType
-^^^^^^^^^^^
-
-Supported NFC card types.
-
-.. code-block:: cpp
-
-   enum class NFCCardType {
-       UNKNOWN,
-       MIFARE_CLASSIC_1K,
-       MIFARE_CLASSIC_4K,
-       MIFARE_ULTRALIGHT,
-       NTAG
+       REGISTER_CARD,  // Add new authorized card
+       DELETE_CARD,    // Remove authorized card
+       LIST_CARDS,     // Display all authorized cards
+       CLONE_CARD,     // Clone a card UID to another card
+       SYSTEM_INFO,    // Show system information
+       EXIT_MENU       // Return to IDLE mode
    };
 
 Configuration Constants

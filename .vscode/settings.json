@@ -1,0 +1,9 @@
+// {
+// 		// File Associations
+// 		"files.associations": {},
+
+// 		"plantuml.diagramsRoot": "docs/plantuml",
+// 		"plantuml.java": "C:\\Program Files (x86)\\Java\\jre1.8.0_441\\bin\\java.exe",
+// 		"plantuml.exportOutDir": "./docs/plantuml",
+// 		"plantuml.exportFormat": "png",
+// }

@@ -1,0 +1,6 @@
+# PlatformIO - Embedded development platform
+# Used for building and uploading Arduino firmware
+platformio>=6.1.0
+
+# Optional: For enhanced serial monitoring
+pyserial>=3.5

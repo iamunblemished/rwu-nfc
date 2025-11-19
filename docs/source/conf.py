@@ -19,11 +19,8 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.graphviz',  # For diagrams
-    'breathe',  # For C++ documentation
+    'sphinx.ext.graphviz',
+    'sphinxcontrib.plantuml',
 ]
 
 templates_path = ['_templates']
@@ -42,6 +39,27 @@ breathe_projects = {
     "NFC Access Control": "../doxygen/xml"
 }
 breathe_default_project = "NFC Access Control"
+
+# -- Options for Graphviz extension ------------------------------------------
+
+graphviz_output_format = 'svg'
+
+# -- Options for PlantUML extension ------------------------------------------
+
+# PlantUML configuration
+# First check if local plantuml.jar exists, otherwise use online server
+import os
+plantuml_jar_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'plantuml.jar')
+
+if os.path.exists(plantuml_jar_path):
+    # Use local PlantUML jar (run docs/setup_plantuml.ps1 to download)
+    plantuml = f'java -jar "{plantuml_jar_path}"'
+else:
+    # Fallback to online PlantUML server
+    plantuml = 'https://www.plantuml.com/plantuml'
+
+plantuml_output_format = 'svg'
+plantuml_latex_output_format = 'pdf'
 
 # -- Options for todo extension ----------------------------------------------
 
@@ -75,13 +93,14 @@ html_theme_options = {
     'collapse_navigation': False,
     'sticky_navigation': True,
     'includehidden': True,
-    'titles_only': False
+    'titles_only': False,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_css_files = ['custom.css']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -96,9 +115,42 @@ html_sidebars = {
 
 # -- Options for LaTeX output ------------------------------------------------
 
+# LaTeX configuration with Unicode support using standard fonts
+latex_engine = 'xelatex'  # Use xelatex for better Unicode support
+
 latex_elements = {
     'papersize': 'a4paper',
     'pointsize': '10pt',
+    'fontpkg': r'''
+\usepackage{fontspec}
+\defaultfontfeatures{Scale=MatchLowercase}
+% Use freely available fonts that ship with TeX Live/MiKTeX
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}[Scale=0.9]
+''',
+    'preamble': r'''
+% Define Unicode characters not available in Latin Modern fonts
+\usepackage{newunicodechar}
+% Box-drawing - simple ASCII replacements
+\newunicodechar{─}{-}
+\newunicodechar{│}{|}
+\newunicodechar{┌}{+}
+\newunicodechar{┐}{+}
+\newunicodechar{└}{+}
+\newunicodechar{┘}{+}
+\newunicodechar{├}{+}
+\newunicodechar{┤}{+}
+\newunicodechar{═}{=}
+% Special symbols
+\newunicodechar{✓}{[OK]}
+\newunicodechar{✗}{[X]}
+\newunicodechar{⚠}{[!]}
+\newunicodechar{❌}{[X]}
+% Variation selector (invisible)
+\newunicodechar{︎}{}
+''',
+    'extraclassoptions': 'openany,oneside',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples

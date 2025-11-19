@@ -215,7 +215,7 @@ Using PlatformIO
 
 Open the serial monitor:
 
-* Click the Serial Monitor icon (🔌) in the status bar
+* Click the Serial Monitor icon in the status bar
 * Or from terminal: ``pio device monitor``
 
 The default baud rate is 115200 (configured in ``platformio.ini``).

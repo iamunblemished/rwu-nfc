@@ -12,6 +12,22 @@ Install Python 3.6 or later, then install the required packages:
 pip install -r requirements.txt
 ```
 
+**For PlantUML Diagrams:**
+
+1. Ensure Java is installed (required for PlantUML):
+   ```powershell
+   java -version
+   ```
+   If not installed, download from https://www.java.com/download/
+
+2. Download PlantUML jar by running the setup script:
+   ```powershell
+   cd docs
+   .\setup_plantuml.ps1
+   ```
+
+This will download `plantuml.jar` to the docs directory for local diagram generation.
+
 ### Build HTML Documentation
 
 **On Windows:**
@@ -135,7 +151,8 @@ open build/html/index.html
 - **Hardware**: Component requirements with detailed wiring diagrams (Graphviz)
 - **Installation**: Setting up the development environment and PlatformIO
 - **Usage**: Operating instructions with menu navigation flowcharts
-- **API Reference**: Detailed class and method documentation with state machine diagrams
+- **API Reference**: Detailed class and method documentation with UML class diagrams and state machines
+- **Class Diagrams**: Complete UML diagrams showing system architecture and relationships
 - **EEPROM Layout**: Memory structure with organization and operation flow diagrams
 - **Card Cloning**: Technical details of cloning technology with process flowcharts
 - **Troubleshooting**: Common issues and solutions
@@ -145,18 +162,21 @@ open build/html/index.html
 
 ### Interactive Diagrams
 
-This documentation includes **8+ professional Graphviz diagrams**:
+This documentation includes **professional diagrams** using both Graphviz and PlantUML:
 
+**Graphviz Diagrams:**
 - System architecture overview
-- State machine with color-coded states
+- Component relationships
+- Memory layout structures
 - Hardware wiring connections
-- Menu navigation flows
-- Card cloning process
-- Mifare Classic memory structure
-- EEPROM layout and operations
-- Read/write operation flows
 
-All diagrams are automatically generated from embedded Graphviz dot language.
+**PlantUML Diagrams:**
+- UML class diagrams (AccessControlSystem, NFCReader)
+- State machine diagrams
+- Sequence diagrams (card registration, card cloning)
+- Complete system architecture
+
+All diagrams are automatically generated from embedded markup during the build process.
 
 ## Contributing
 
@@ -175,9 +195,13 @@ This documentation uses the following Python packages (see `requirements.txt`):
 - **sphinx** (>=5.0.0) - Documentation generator
 - **sphinx-rtd-theme** (>=1.2.0) - Read the Docs theme
 - **breathe** (>=4.35.0) - C++ API documentation support
-- **graphviz** (>=0.20) - Diagram generation
+- **graphviz** (>=0.20) - Graphviz diagram generation
+- **sphinxcontrib-plantuml** (>=0.24) - PlantUML diagram support
 
-**Note**: Graphviz executable must also be installed on your system for diagram generation.
+**System Requirements:**
+- **Graphviz** executable must be installed for Graphviz diagrams
+- **Java** runtime required for PlantUML diagrams
+- **plantuml.jar** downloaded via `setup_plantuml.ps1` script
 
 ## Resources
 
@@ -186,4 +210,5 @@ This documentation uses the following Python packages (see `requirements.txt`):
 - [Read the Docs Theme](https://sphinx-rtd-theme.readthedocs.io/)
 - [Breathe Documentation](https://breathe.readthedocs.io/) (for C++ API docs)
 - [Graphviz Documentation](https://graphviz.org/documentation/)
+- [PlantUML Documentation](https://plantuml.com/)
 - [Online Documentation](https://menazaa.github.io/rwu-nfc/)
