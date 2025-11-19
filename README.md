@@ -424,26 +424,26 @@ This project demonstrates advanced NFC card management without requiring special
 
 ## 📚 Documentation
 
-Comprehensive documentation is available in the `doc/` directory, built with Sphinx:
+Comprehensive documentation is available in the `docs/` directory, built with Sphinx:
 
-- **[Introduction](doc/source/introduction.rst)** - System overview and architecture diagrams
-- **[Hardware Setup](doc/source/hardware.rst)** - Wiring diagrams and component details
-- **[Installation Guide](doc/source/installation.rst)** - Development environment setup
-- **[Usage Guide](doc/source/usage.rst)** - Operating instructions and menu navigation
-- **[API Reference](doc/source/api.rst)** - Class documentation and code examples
-- **[EEPROM Layout](doc/source/eeprom.rst)** - Memory structure and management
-- **[Card Cloning](doc/source/card_cloning.rst)** - Technical details of cloning technology
-- **[Troubleshooting](doc/source/troubleshooting.rst)** - Common issues and solutions
+- **[Introduction](docs/source/introduction.rst)** - System overview and architecture diagrams
+- **[Hardware Setup](docs/source/hardware.rst)** - Wiring diagrams and component details
+- **[Installation Guide](docs/source/installation.rst)** - Development environment setup
+- **[Usage Guide](docs/source/usage.rst)** - Operating instructions and menu navigation
+- **[API Reference](docs/source/api.rst)** - Class documentation and code examples
+- **[EEPROM Layout](docs/source/eeprom.rst)** - Memory structure and management
+- **[Card Cloning](docs/source/card_cloning.rst)** - Technical details of cloning technology
+- **[Troubleshooting](docs/source/troubleshooting.rst)** - Common issues and solutions
 
 ### Building Documentation
 
 ```bash
-cd doc
+cd docs
 pip install -r requirements.txt
 make html  # or .\make.bat html on Windows
 ```
 
-Open `doc/build/html/index.html` in your browser.
+Open `docs/build/html/index.html` in your browser.
 
 ## 🤝 Contributing
 
@@ -498,7 +498,7 @@ Contributions are welcome! Here's how you can help:
 For issues and questions:
 1. Check Serial Monitor output (115200 baud)
 2. Verify hardware connections against wiring diagram
-3. Review [Troubleshooting Documentation](doc/source/troubleshooting.rst)
+3. Review [Troubleshooting Documentation](docs/source/troubleshooting.rst)
 4. Check card compatibility (Mifare Classic 1K/4K required for cloning)
 5. Open an issue on GitHub with detailed information
 
