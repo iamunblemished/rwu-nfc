@@ -1,33 +1,33 @@
 # NFC Access Control System
 
-> **An embedded NFC project progressing from basic tag operations to a complete access control system with advanced card cloning technology.**
+> **A student project for RWU NFC Technology course - progressing from basic tag operations to a complete access control system.**
 
 [![Platform](https://img.shields.io/badge/Platform-Arduino-blue.svg)](https://www.arduino.cc/)
 [![Framework](https://img.shields.io/badge/Framework-PlatformIO-orange.svg)](https://platformio.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Documentation](https://img.shields.io/badge/Docs-Sphinx-brightgreen.svg)](https://menazaa.github.io/rwu-nfc/)
 
-## 📖 Description
+## 📖 About This Project
 
-The NFC Access Control System is a comprehensive embedded project developed as part of an NFC technology course. What started as two fundamental tasks—reading and writing NFC tags—has evolved into a professional-grade access control solution built on the Arduino platform with the industry-standard PN532 NFC module.
+This NFC Access Control System was developed as a student project for the NFC Technology course at RWU (Ravensburg-Weingarten University). The project demonstrates practical application of NFC concepts, starting with fundamental read/write operations and evolving into a complete access control solution.
 
-### Project Evolution
+### Project Structure
 
-This project follows a structured learning progression:
+The project is organized around the course requirements:
 
-- **📖 Task 1: Tag Reading** - Learn NFC fundamentals by reading card UIDs and identifying different card types
-- **✍️ Task 2: Tag Writing** - Build on Task 1 by writing data to NFC cards with different memory structures
-- **🔒 Extended Project** - Full access control system integrating both tasks with card management, persistent storage, LCD interface, and physical access control
+- **📖 Task 1: Tag Reading** - Implementation of basic NFC card reading and UID identification
+- **✍️ Task 2: Tag Writing** - Data writing capabilities with memory management
+- **🔒 Extended Implementation** - Integration of both tasks into a functional access control system with additional features
 
-The result combines educational value with practical functionality, suitable for both learning and real-world applications.
+This structure demonstrates progression from fundamental NFC operations to a complete embedded system.
 
-### What Makes This Project Unique?
+### Technical Achievements
 
-Unlike traditional access control systems, this project implements **custom sector card cloning technology** that works with standard Mifare Classic cards—no expensive "magic cards" required. The system intelligently manages both physical and cloned UIDs, providing flexible access control without the limitations of conventional NFC systems.
+Beyond the basic course requirements, this project implements advanced features including **custom sector card cloning** that works with standard Mifare Classic cards. The system manages both physical and virtual card identities, providing practical insights into NFC security concepts.
 
-### Key Highlights
+### Key Features
 
-- 🎓 **Educational**: Progressive learning from simple read/write to complete system
+- 🎓 **Educational Value**: Clear progression from basic to advanced NFC concepts
 - 📚 **Well-Documented**: Comprehensive documentation with practical examples
 - 🔒 **Secure**: Local card database with EEPROM persistence, no network dependencies
 - ⚡ **Fast**: IRQ-based card detection with <100ms response time

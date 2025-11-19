@@ -3,11 +3,10 @@
 NFC Access Control System Documentation
 ========================================
 
-Welcome to the documentation for the NFC Access Control System, a comprehensive 
-embedded project developed as part of an NFC technology course. Starting with 
-fundamental tag reading and writing tasks, this project has evolved into a 
-professional-grade access control solution using the PN532 NFC reader with 
-advanced card management and cloning capabilities.
+Welcome to the documentation for the NFC Access Control System, a student project 
+developed for the NFC Technology course at RWU (Ravensburg-Weingarten University). 
+This project demonstrates the progression from basic NFC tag operations to a complete 
+access control system using the PN532 NFC reader with advanced card management capabilities.
 
 .. toctree::
    :maxdepth: 2
@@ -94,37 +93,39 @@ Quick Start
 4. Explore :doc:`usage` for operating the complete system
 5. Learn about :doc:`card_cloning` for advanced features
 
-What You'll Learn
------------------
+Project Outcomes
+----------------
 
-Hardware Skills
-^^^^^^^^^^^^^^^
+This project covers the following technical areas:
+
+Hardware Integration
+^^^^^^^^^^^^^^^^^^^^
 
 * Arduino Nano programming and configuration
 * SPI and I2C communication protocols
-* Interfacing with NFC modules
+* Interfacing with NFC modules (PN532)
 * LCD display control
 * Button input handling
 * Relay control for physical outputs
 
-Software Skills
-^^^^^^^^^^^^^^^
+Software Implementation
+^^^^^^^^^^^^^^^^^^^^^^^
 
 * Embedded C++ programming
-* State machine design
-* Non-blocking code patterns
+* State machine design patterns
+* Non-blocking code implementation
 * EEPROM persistent storage
-* Menu system implementation
-* Error handling and recovery
+* Menu system development
+* Error handling strategies
 
-NFC Technology
-^^^^^^^^^^^^^^
+NFC Technology Concepts
+^^^^^^^^^^^^^^^^^^^^^^^
 
 * NFC/RFID fundamentals at 13.56 MHz
 * Card UID reading and verification
 * Memory structures (blocks vs pages)
-* Authentication for Mifare Classic
-* Writing and verifying data
+* Authentication mechanisms for Mifare Classic
+* Data writing and verification
 * Card cloning techniques
 
 Documentation Structure

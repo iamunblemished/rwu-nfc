@@ -1,23 +1,23 @@
 Introduction
 ============
 
-The NFC Access Control System is a comprehensive embedded project developed as part of 
-an NFC technology course. What started as two fundamental tasks—reading and writing NFC 
-tags—has been expanded into a full-featured, professional-grade access control solution 
-built using Arduino technology and the industry-standard PN532 NFC module.
+The NFC Access Control System is a student project developed for the NFC Technology 
+course at RWU (Ravensburg-Weingarten University). Starting with two fundamental course 
+tasks—reading and writing NFC tags—this project evolved into a complete access control 
+solution built on Arduino technology with the PN532 NFC module.
 
 Project Evolution
 -----------------
 
-This project follows a structured learning progression:
+This project demonstrates a structured learning approach:
 
 **Course Task 1: Tag Reading**
-  Learn the fundamentals of NFC communication by reading card UIDs and identifying 
-  different card types. See :doc:`examples` for the basic read example.
+  Introduction to NFC communication by reading card UIDs and identifying different 
+  card types. See :doc:`examples` for the basic read implementation.
 
 **Course Task 2: Tag Writing**
-  Build on Task 1 by learning to write data to NFC cards, understanding memory 
-  structures, and handling different card types. See :doc:`examples` for the write example.
+  Building on Task 1 to write data to NFC cards, understanding memory structures, 
+  and handling different card types. See :doc:`examples` for the write implementation.
 
 **Extended Project: Full Access Control System**
   Integrate reading and writing capabilities into a complete access control solution 

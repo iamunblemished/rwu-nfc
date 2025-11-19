@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'NFC Access Control System'
-copyright = '2025, RWU NFC Lab'
-author = 'RWU NFC Lab'
+copyright = '2025, RWU Student Project'
+author = 'RWU Student'
 release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
@@ -150,6 +150,31 @@ latex_elements = {
 % Variation selector (invisible)
 \newunicodechar{︎}{}
 ''',
+    'maketitle': r'''
+\makeatletter
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+  {\Huge \textbf{\@title}\par}
+  \vspace{1cm}
+  {\Large \@author\par}
+  \vspace{1cm}
+  {\large \@date\par}
+  \vspace{2cm}
+  {\large 
+  \textbf{Project Resources:}\par
+  \vspace{0.5cm}
+  GitHub Repository:\par
+  \url{https://github.com/Menazaa/rwu-nfc}\par
+  \vspace{0.5cm}
+  Online Documentation:\par
+  \url{https://menazaa.github.io/rwu-nfc/}\par
+  }
+  \vfill
+  {\small RWU Student Project - NFC Technology Course\par}
+\end{titlepage}
+\makeatother
+''',
     'extraclassoptions': 'openany,oneside',
 }
 
@@ -157,7 +182,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'NFCAccessControl.tex', 'NFC Access Control System Documentation',
-     'RWU NFC Lab', 'manual'),
+     'Mohamed Aly', 'manual'),
 ]
 
 # -- Options for manual page output ------------------------------------------

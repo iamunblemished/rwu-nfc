@@ -4,87 +4,195 @@
 		{
 			"label": "PlatformIO Build",
 			"type": "shell",
-			"command": "pio run",
-			"problemMatcher": [],
-			"group": "build"
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"linux": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio run -e ${input:environment}"
+				]
+			},
+			"windows": {
+				"command": "powershell",
+				"args": [
+					"-c",
+					".venv/Scripts/Activate.ps1; pio run -e ${input:environment}"
+				]
+			},
+			"osx": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio run -e ${input:environment}"
+				]
+			},
+			"problemMatcher": [
+				"$platformio"
+			]
 		},
 		{
-			"label": "PlatformIO: Upload Task 1 (Read)",
+			"label": "PlatformIO Upload",
 			"type": "shell",
-			"command": "python",
-			"args": [
-				"-m",
-				"platformio",
-				"run",
-				"-e",
-				"task1_read",
-				"--target",
-				"upload"
-			],
-			"problemMatcher": [],
-			"group": "build"
+			"group": "build",
+			"linux": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio run -e ${input:environment} --target upload"
+				]
+			},
+			"windows": {
+				"command": "powershell",
+				"args": [
+					"-c",
+					".venv/Scripts/Activate.ps1; pio run -e ${input:environment} --target upload"
+				]
+			},
+			"osx": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio run -e ${input:environment} --target upload"
+				]
+			},
+			"problemMatcher": [
+				"$platformio"
+			]
 		},
 		{
-			"label": "PlatformIO: Upload Task 2 (Write)",
+			"label": "PlatformIO Clean",
 			"type": "shell",
-			"command": "python",
-			"args": [
-				"-m",
-				"platformio",
-				"run",
-				"-e",
-				"task2_write",
-				"--target",
-				"upload"
-			],
-			"problemMatcher": [],
-			"group": "build"
+			"linux": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio run -e ${input:environment} --target clean"
+				]
+			},
+			"windows": {
+				"command": "powershell",
+				"args": [
+					"-c",
+					".venv/Scripts/Activate.ps1; pio run -e ${input:environment} --target clean"
+				]
+			},
+			"osx": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio run -e ${input:environment} --target clean"
+				]
+			},
+			"problemMatcher": []
 		},
 		{
-			"label": "PlatformIO: Upload Full System",
+			"label": "PlatformIO Monitor",
 			"type": "shell",
-			"command": "python",
-			"args": [
-				"-m",
-				"platformio",
-				"run",
-				"-e",
+			"group": "test",
+			"linux": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio device monitor --baud ${input:baud_rate}"
+				]
+			},
+			"windows": {
+				"command": "powershell",
+				"args": [
+					"-c",
+					".venv/Scripts/Activate.ps1; pio device monitor --baud ${input:baud_rate}"
+				]
+			},
+			"osx": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio device monitor --baud ${input:baud_rate}"
+				]
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "PlatformIO Test",
+			"type": "shell",
+			"linux": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio test -e ${input:environment}"
+				]
+			},
+			"windows": {
+				"command": "powershell",
+				"args": [
+					"-c",
+					".venv/Scripts/Activate.ps1; pio test -e ${input:environment}"
+				]
+			},
+			"osx": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && pio test -e ${input:environment}"
+				]
+			},
+			"problemMatcher": [
+				"$platformio"
+			]
+		},
+		{
+			"label": "Build Documentation",
+			"type": "shell",
+			"linux": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && cd docs && make html"
+				]
+			},
+			"windows": {
+				"command": "powershell",
+				"args": [
+					"-c",
+					".venv/Scripts/Activate.ps1; cd docs; make html"
+				]
+			},
+			"osx": {
+				"command": "bash",
+				"args": [
+					"-c",
+					"source .venv/bin/activate && cd docs && make html"
+				]
+			},
+			"problemMatcher": []
+		}
+	],
+	"inputs": [
+		{
+			"id": "environment",
+			"type": "pickString",
+			"description": "Choose the PlatformIO environment",
+			"default": "nanoatmega328",
+			"options": [
 				"nanoatmega328",
-				"--target",
-				"upload"
-			],
-			"problemMatcher": [],
-			"group": "build"
+				"task1_read",
+				"task2_write"
+			]
 		},
 		{
-			"label": "PlatformIO: Monitor Task 1",
-			"type": "shell",
-			"command": "python",
-			"args": [
-				"-m",
-				"platformio",
-				"device",
-				"monitor",
-				"--baud",
-				"115200"
-			],
-			"problemMatcher": [],
-			"group": "test"
-		},
-		{
-			"label": "PlatformIO: Monitor Task 2",
-			"type": "shell",
-			"command": "python",
-			"args": [
-				"-m",
-				"platformio",
-				"device",
-				"monitor",
-				"--baud",
-				"115200"
-			],
-			"problemMatcher": [],
-			"group": "test"
+			"id": "baud_rate",
+			"type": "pickString",
+			"description": "Choose the baud rate for serial monitor",
+			"default": "115200",
+			"options": [
+				"9600",
+				"115200",
+				"230400",
+				"460800"
+			]
 		}
 	]
 }
