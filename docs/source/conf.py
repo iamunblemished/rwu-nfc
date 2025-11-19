@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'NFC Access Control System'
+project = 'NFC Laboratory Assignments'
 copyright = '2025, RWU NFC Lab'
 author = 'RWU NFC Lab'
 release = '1.0.0'
@@ -27,7 +27,7 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-exclude_patterns = []
+# exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -39,9 +39,9 @@ html_static_path = ['_static']
 # Breathe is used for C++ API documentation from Doxygen XML output
 
 breathe_projects = {
-    "NFC Access Control": "../doxygen/xml"
+    "NFC Lab Projects": "../doxygen/xml"
 }
-breathe_default_project = "NFC Access Control"
+breathe_default_project = "NFC Lab Projects"
 
 # -- Options for todo extension ----------------------------------------------
 
@@ -104,8 +104,14 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'NFCAccessControl.tex', 'NFC Access Control System Documentation',
+    (master_doc, 'NFCAccessControl.tex', 'NFC Laboratory Assignment Documentation',
      'RWU NFC Lab', 'manual'),
+]
+
+latex_documents = [
+    # (source start file, target name, title, author, documentclass [article, manual, howto]).
+    ('manual_read', 'NFC_Read_Guide.tex', 'NFC Tag Reading Documentation', 'RWU NFC Lab', 'manual'), 
+    ('manual_write', 'NFC_Write_Guide.tex', 'NFC Card Cloning Documentation', 'RWU NFC Lab', 'manual'),
 ]
 
 # -- Options for manual page output ------------------------------------------
@@ -113,7 +119,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'nfcaccesscontrol', 'NFC Access Control System Documentation',
+    (master_doc, 'nfcaccesscontrol', 'NFC Laboratory Assignment Documentation',
      [author], 1)
 ]
 
@@ -123,7 +129,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'NFCAccessControl', 'NFC Access Control System Documentation',
+    (master_doc, 'NFCAccessControl', 'NFC Laboratory Projects Documentation',
      author, 'NFCAccessControl', 'Professional access control system using PN532 NFC reader.',
      'Miscellaneous'),
 ]
