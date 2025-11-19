@@ -53,18 +53,83 @@ Software Used
 Key Methods
 ^^^^^^^^^^^
 
-* ``readCard()``: The main orchestrator for detecting and reading data.
-* ``readPhysicalUID()``: Reads the read-only Block 0.
-* ``readCustomSector()``: Authenticates and reads Sector 1 to check for cloned credentials.
+* ``NFCReader::readCard()``: The main orchestrator for detecting and reading data.
+* ``NFCReader::readCustomSector()``: Authenticates and reads Sector 1 to check for cloned credentials.
+* ``NFCReader::readMifareClassicBlock()``: Authenticates a Mifare Classic Block before reading data
 
-Diagrams of Connections
+Wiring Diagram
 -----------------------
-The system uses an interrupt-driven approach where the PN532 signals the Arduino when a card enters the RF field.
+.. graphviz::
+   :caption: Hardware Connection Diagram
+
+   digraph hardware_connections {
+       rankdir=LR;
+       node [shape=record];
+
+       // Arduino
+       arduino [label="{Arduino Nano|{<d2>D2 (IRQ)|<d3>D3 (RST)|<d4>D4|<d5>D5|<d6>D6|<d7>D7|<d8>D8|<d9>D9|<d10>D10 (SS)|<d11>D11 (MOSI)|<d12>D12 (MISO)|<d13>D13 (SCK)|<a0>A0|<a1>A1|<a2>A2|<a3>A3|<a4>A4|<5v>5V|<gnd>GND}}", fillcolor=lightgreen, style=filled];
+
+       // PN532
+       pn532 [label="{PN532 NFC Module|{<irq>IRQ|<rst>RST|<ss>SS|<mosi>MOSI|<miso>MISO|<sck>SCK|<vcc>VCC|<gnd>GND}}", fillcolor=lightyellow, style=filled];
+
+       // LCD
+       lcd [label="{16x2 LCD Display|{<rs>RS|<e>E|<d4>D4|<d5>D5|<d6>D6|<d7>D7|<vdd>VDD|<vss>VSS|<v0>V0}}", fillcolor=lightblue, style=filled];
+
+       // Buttons
+       btn_up [label="Button UP", shape=box, fillcolor=orange, style=filled];
+       btn_down [label="Button DOWN", shape=box, fillcolor=orange, style=filled];
+       btn_select [label="Button SELECT", shape=box, fillcolor=orange, style=filled];
+       btn_back [label="Button BACK", shape=box, fillcolor=orange, style=filled];
+
+       // Relay
+       relay [label="{Relay Module|{<in>IN|<vcc>VCC|<gnd>GND}}", fillcolor=pink, style=filled];
+
+       // Potentiometer
+       pot [label="10kΩ POT\n(Contrast)", shape=ellipse, fillcolor=lightgray, style=filled];
+
+       // Power
+       power_5v [label="5V", shape=ellipse, fillcolor=red, style=filled];
+       power_gnd [label="GND", shape=ellipse, fillcolor=black, style=filled, fontcolor=white];
+
+       // Connections
+       arduino:d2 -> pn532:irq [label="IRQ"];
+       arduino:d3 -> pn532:rst [label="RST"];
+       arduino:d10 -> pn532:ss [label="SS"];
+       arduino:d11 -> pn532:mosi [label="MOSI"];
+       arduino:d12 -> pn532:miso [label="MISO"];
+       arduino:d13 -> pn532:sck [label="SCK"];
+
+       arduino:d4 -> lcd:rs [label="RS"];
+       arduino:d5 -> lcd:e [label="E"];
+       arduino:d6 -> lcd:d4 [label="D4"];
+       arduino:d7 -> lcd:d5 [label="D5"];
+       arduino:d8 -> lcd:d6 [label="D6"];
+       arduino:d9 -> lcd:d7 [label="D7"];
+
+       arduino:a0 -> btn_up [label="UP"];
+       arduino:a1 -> btn_down [label="DOWN"];
+       arduino:a2 -> btn_select [label="SELECT"];
+       arduino:a3 -> btn_back [label="BACK"];
+
+       arduino:a4 -> relay:in [label="Control"];
+
+       arduino:5v -> power_5v;
+       arduino:gnd -> power_gnd;
+
+       power_5v -> pn532:vcc;
+       power_5v -> lcd:vdd;
+       power_5v -> relay:vcc;
+
+       power_gnd -> pn532:gnd;
+       power_gnd -> lcd:vss;
+       power_gnd -> relay:gnd;
+
+       pot -> lcd:v0 [label="Contrast"];
+   }
 
 
-
-Code Snippets and API Implementation
-------------------------------------
+Code Snippets
+-------------
 The system implements an intelligent ``readCard`` method that automatically prioritizes cloned data.
 
 Reading Strategy (NFCReader.cpp)
@@ -112,6 +177,53 @@ Custom Sector Reading (NFCReader.cpp)
         return true;
       }
       return false;
+    }
+
+Mifare Classic Reading (NFCReader.cpp)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: cpp
+
+    bool NFCReader::readMifareClassicBlock(uint8_t block, uint8_t* buffer, const uint8_t* key, bool useKeyB) {
+      if (!_nfc || !_lastCardInfo.detected) return false;
+      
+      // Authenticate first
+      if (!authenticateMifareBlock(block, key, useKeyB, _lastCardInfo.uid, _lastCardInfo.uidLength)) {
+        return false;
+      }
+      
+      // Read block
+      return _nfc->mifareclassic_ReadDataBlock(block, buffer);
+    }
+
+The NFCReader class can be instantiated and used as follows:
+
+.. code-block:: cpp
+
+    #include <NFCReader.h>
+    
+    NFCReader reader(NFCCommMode::SPI, NFCReadMode::IRQ);
+    uint8_t uid[7];
+    uint8_t uidLength;
+    
+    void setup() {
+        Serial.begin(115200);
+        if (!reader.begin()) {
+            Serial.println("NFC reader initialization failed!");
+            while(1);
+        }
+    }
+    
+    void loop() {
+        if (reader.readCard(uid, &uidLength)) {
+            Serial.print("Card UID: ");
+            for (uint8_t i = 0; i < uidLength; i++) {
+                Serial.print(uid[i], HEX);
+                Serial.print(" ");
+            }
+            Serial.println();
+        }
+        delay(100);
     }
 
 Results
